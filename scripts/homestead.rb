@@ -20,10 +20,6 @@ class Homestead
     # Configure A Private Network IP
     config.vm.network :private_network, ip: settings["ip"] ||= "192.168.10.10"
 
-# Configure Additional Networks
-    if settings.has_key?("php_version")
-      php["version"] = settings["php_version"] || "php5"
-    end
 
     # Configure Additional Networks
     if settings.has_key?("networks")
@@ -128,7 +124,7 @@ class Homestead
         # Double-splat (**) operator only works with symbol keys, so convert
         options.keys.each{|k| options[k.to_sym] = options.delete(k) }
 
-        config.vm.synced_folder folder["map"], folder["to"], type: folder["type"] ||= nil, **options
+        config.vm.synced_folder folder["map"], folder["to"], type: folder["type"] ||= nil, owner: "vagrant", group: "www-data"
       end
     end
 
@@ -192,7 +188,7 @@ class Homestead
     if settings.has_key?("variables")
       settings["variables"].each do |var|
         config.vm.provision "shell" do |s|
-          s.inline = "echo \"\nenv[$1] = '$2'\" >> /etc/php/"+php["version"]+"/fpm/php-fpm.conf"
+          s.inline = "echo \"\nenv[$1] = '$2'\" >> /etc/php/"+settings["php_version"] || "php5"+"/fpm/php-fpm.conf"
           s.args = [var["key"], var["value"]]
         end
 
