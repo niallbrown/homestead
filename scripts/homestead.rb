@@ -124,7 +124,7 @@ class Homestead
         # Double-splat (**) operator only works with symbol keys, so convert
         options.keys.each{|k| options[k.to_sym] = options.delete(k) }
 
-        config.vm.synced_folder folder["map"], folder["to"], type: folder["type"] ||= nil, owner: "vagrant", group: "www-data"
+        config.vm.synced_folder folder["map"], folder["to"], type: folder["type"] ||= nil, owner: "www-data", group: "www-data"
       end
     end
 
