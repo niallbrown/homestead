@@ -2,6 +2,10 @@
 
 mkdir /etc/nginx/ssl 2>/dev/null
 
+if[$5 != 'php5']
+    ln -s /var/run/php/php7.0-fpm.sock
+fi
+
 PATH_SSL="/etc/nginx/ssl"
 PATH_KEY="${PATH_SSL}/${1}.key"
 PATH_CSR="${PATH_SSL}/${1}.csr"
@@ -40,7 +44,7 @@ block="server {
 
     location ~ \.php$ {
         fastcgi_split_path_info ^(.+\.php)(/.+)$;
-        fastcgi_pass unix:/var/run/php/php7.0-fpm.sock;
+        fastcgi_pass unix:/var/run/$5-fpm.sock;
         fastcgi_index index.php;
         include fastcgi_params;
         fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;
@@ -65,4 +69,4 @@ block="server {
 echo "$block" > "/etc/nginx/sites-available/$1"
 ln -fs "/etc/nginx/sites-available/$1" "/etc/nginx/sites-enabled/$1"
 service nginx restart
-service php7.0-fpm restart
+service php$5-fpm restart

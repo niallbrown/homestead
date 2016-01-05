@@ -20,6 +20,11 @@ class Homestead
     # Configure A Private Network IP
     config.vm.network :private_network, ip: settings["ip"] ||= "192.168.10.10"
 
+# Configure Additional Networks
+    if settings.has_key?("php_version")
+      php["version"] = settings["php_version"] || "php5"
+    end
+
     # Configure Additional Networks
     if settings.has_key?("networks")
       settings["networks"].each do |network|
@@ -146,7 +151,7 @@ class Homestead
 
       config.vm.provision "shell" do |s|
         s.path = scriptDir + "/serve-#{type}.sh"
-        s.args = [site["map"], site["to"], site["port"] ||= "80", site["ssl"] ||= "443"]
+        s.args = [site["map"], site["to"], site["port"] ||= "80", site["ssl"] ||= "443", site["php_version"] ||= "php5"]
       end
 
       # Configure The Cron Schedule
@@ -187,7 +192,7 @@ class Homestead
     if settings.has_key?("variables")
       settings["variables"].each do |var|
         config.vm.provision "shell" do |s|
-          s.inline = "echo \"\nenv[$1] = '$2'\" >> /etc/php/7.0/fpm/php-fpm.conf"
+          s.inline = "echo \"\nenv[$1] = '$2'\" >> /etc/php/"+php["version"]+"/fpm/php-fpm.conf"
           s.args = [var["key"], var["value"]]
         end
 
