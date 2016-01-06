@@ -22,7 +22,7 @@ if [ "$(cat /etc/php5/fpm/conf.d/20-mongo.ini | grep 'mongodb.so')" ];
            echo "need to load extension in fpm"
 fi
 
-#echo 'db.createUser({user: "admin", pwd: "admin", roles: []);' | mongo admin
+echo 'db.createUser({user: "admin", pwd: "admin", roles: []);' | mongo admin
 
 #mongo --eval 'use admin'
 #mongo --eval 'db.createUser({ user: "admin", pwd: "admin", roles: [ db:  "admin"]})'
