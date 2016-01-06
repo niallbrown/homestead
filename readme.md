@@ -1,5 +1,6 @@
-create a composer.json file with the following:
- <code>
+
+create a <b>composer.json</b> file with the following:
+```json
 {
 "repositories": [{
     "type": "vcs",
@@ -10,7 +11,7 @@ create a composer.json file with the following:
         "laravel/homestead": "dev-master"
     }
 }
-</code>
+```
 # Laravel Homestead
 
 The official Laravel local development environment.
