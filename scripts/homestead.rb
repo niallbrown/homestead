@@ -112,7 +112,7 @@ class Homestead
     # Register All Of The Configured Shared Folders
     if settings.include? 'folders'
       settings["folders"].each do |folder|
-        mount_opts = []
+        mount_opts = ["dmode=775,fmode=664"]
 
         if (folder["type"] == "nfs")
             mount_opts = folder["mount_options"] ? folder["mount_options"] : ['actimeo=1']
@@ -124,7 +124,7 @@ class Homestead
         # Double-splat (**) operator only works with symbol keys, so convert
         options.keys.each{|k| options[k.to_sym] = options.delete(k) }
 
-        config.vm.synced_folder folder["map"], folder["to"], type: folder["type"] ||= nil, owner: "www-data", group: "www-data"
+        config.vm.synced_folder folder["map"], folder["to"], type: folder["type"] ||= nil, owner: "vagrant", group: "www-data", **options
       end
     end
 
