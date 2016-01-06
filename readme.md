@@ -17,7 +17,11 @@ run composer update and then
 ```
 ./vendor/bin/homestead make
 ```
-edit the Homestead.yaml file with the settings you need.
+edit the Homestead.yaml file with the settings you need. Then run the vagrant command to build the box.
+
+```
+vagrant up
+```
 
 Based on the laravel homestead repo:
 # Laravel Homestead
